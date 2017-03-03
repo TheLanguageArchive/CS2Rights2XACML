@@ -1,0 +1,9 @@
+csrights2xacml changelog
+
+[Meta: Please edit this at each new version and also between if
+possible. Do not include small clean-up changes that are not visible
+to users.]
+
+version ${project.version}.r${buildNumber} (${package.timestamp})
+- Initial release
+
