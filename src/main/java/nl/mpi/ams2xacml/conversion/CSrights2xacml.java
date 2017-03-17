@@ -21,6 +21,7 @@ public class CSrights2xacml {
 	private static String csdbURL;
 	private static String csdbUser;
 	private static String csdbPassword;
+	private static String usernameFormat;
 	private static XACMLtemplateHandler xacmlHandler;
 
 	private static XPathExpression templateReadObjDSXPath;
@@ -39,6 +40,8 @@ public class CSrights2xacml {
 		System.err.println("INF: -p=<DB password>  the password to use when connecting to the database (default: '')");
 		System.err.println("INF: -d=<DIR>  the directory where to output the policy files to. (default: './generatedPolicies/')");
 		System.err.println("INF: -g=<integer>  replace groups with more than <integer> users by the 'authenticated' user. (default: -1, do not replace)");
+		System.err.println("INF: -f=<format>  the username format to use in te output XACML. Possible values are: 'strip' (remove '@domain' from usernames), "
+				+ "'keep' (leave usernames as they are returned from the corpusstructure) and 'both' (generate both versions for each user). (default: keep");
 	}
 
 	
@@ -48,7 +51,7 @@ public class CSrights2xacml {
 	public static void main(String [] args) throws Exception {
 		xacmlHandler = new XACMLtemplateHandler();
 		// check command line arguments
-		OptionParser parser = new OptionParser( "c:u:p:d:g:?*" );
+		OptionParser parser = new OptionParser( "c:u:p:d:g:f:?*" );
 		OptionSet options = parser.parse(args);
 		if (options.has("c"))
 			csdbURL = (String) options.valueOf("c");
@@ -60,7 +63,15 @@ public class CSrights2xacml {
 			xacmlHandler.setPoliciesDir((String) options.valueOf("d"));
 		}
 		if (options.has("g")) {
-			xacmlHandler.setMaxUsersPerGroup(Integer.parseInt((String) options.valueOf("g")));
+			int number = Integer.parseInt((String) options.valueOf("g"));
+			xacmlHandler.setMaxUsersPerGroup(number);
+		}
+		if (options.has("f")) {
+			usernameFormat = (String) options.valueOf("f");
+			if (!usernameFormat.equals("keep") && !usernameFormat.equals("strip") && !usernameFormat.equals("both")) {
+				showHelp();
+				System.exit(0);
+			}
 		}
 		if (options.has("?")) {
 			showHelp();
@@ -101,7 +112,7 @@ public class CSrights2xacml {
 	}
 
 	public static void init() throws Exception {
-
+		//fill in defaults
 		if (startNodeIds.isEmpty())
 			startNodeIds.add("MPI301420#");
 		if (csdbUser == null)
@@ -112,6 +123,8 @@ public class CSrights2xacml {
 			csdbURL = "jdbc:postgresql://lux08.mpi.nl:5432/corpusstructure";
 		else
 			csdbURL = "jdbc:postgresql://" + csdbURL;
+		if (usernameFormat == null)
+			usernameFormat = "keep";
 
 		csDAO = new CorpusStructureDAO(csdbURL, csdbUser, csdbPassword);
 
@@ -151,7 +164,7 @@ public class CSrights2xacml {
 			nodeToRemove = xacmlHandler.getXPathTemplateNode(templateManageObjRuleXPath);
 		}
 		
-		xacmlHandler.generateXACMLAccessList(allowedUsers, templateNode, nodeToRemove);
+		xacmlHandler.generateXACMLAccessList(allowedUsers, templateNode, nodeToRemove, usernameFormat);
 	}
 
 }

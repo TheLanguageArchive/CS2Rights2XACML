@@ -50,30 +50,36 @@ public class XACMLtemplateHandler {
 	 * @param nodeToRemove The {@link org.w3c.dom.Node Node} to remove from
 	 * the template policy file
 	 */
-	public void generateXACMLAccessList(List<String> users, Node templateNode, Node nodeToRemove) {
-		Node newUserNode = templateNode.cloneNode(true);
+	public void generateXACMLAccessList(List<String> users, Node templateNode, Node nodeToRemove, String usernameFormat) {
 		if (users.size() > 1) {
 			users.remove(0);
 			if (maxUsersPerGroup == -1 || users.size() < maxUsersPerGroup) {
 				for (String user : users) {
-					newUserNode.setTextContent(user);
-					templateNode.getParentNode().appendChild(newUserNode);
+					if (usernameFormat.equals("strip")) {
+						user = user.substring(0, user.indexOf("@"));
+					} else if (usernameFormat.equals("both")) {
+						String userAlternativeFormat = user.substring(0, user.indexOf("@"));
+						addNewUserNode(templateNode, userAlternativeFormat);
+					}
+					addNewUserNode(templateNode, user);
 				}
 			} else {
-				newUserNode.setTextContent("authenticated");
-				templateNode.getParentNode().appendChild(newUserNode);
+				addNewUserNode(templateNode, "authenticated");
 			}
 		} else if (users.get(0) == AccessInfo.EVERYBODY) {
-			newUserNode.setTextContent("anonymous");
-			templateNode.getParentNode().appendChild(newUserNode);
+			addNewUserNode(templateNode, "anonymous");
 		} else if (users.get(0) == AccessInfo.ALL_AUTH) {
-			newUserNode.setTextContent("authenticated");
-			templateNode.getParentNode().appendChild(newUserNode);
+			addNewUserNode(templateNode, "authenticated");
 		}
 
 		nodeToRemove.getParentNode().removeChild(nodeToRemove);
 	}
 
+	private void addNewUserNode(Node templateNode, String userName) {
+		Node newUserNode = templateNode.cloneNode(true);
+		newUserNode.setTextContent(userName);
+		templateNode.getParentNode().appendChild(newUserNode);
+	}
 	
 	/**
 	 * Stores the XACML {@link org.w3c.dom.Document Document} passed
