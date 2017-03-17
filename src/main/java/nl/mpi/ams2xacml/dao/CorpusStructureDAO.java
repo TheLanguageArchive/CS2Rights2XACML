@@ -1,17 +1,15 @@
 package nl.mpi.ams2xacml.dao;
 
-import nl.mpi.corpusstructure.CorpusStructureDBImpl;
-import nl.mpi.corpusstructure.CorpusStructureDB;
-import nl.mpi.corpusstructure.ArchiveObjectsDB;
-import nl.mpi.corpusstructure.AccessInfo;
-import nl.mpi.corpusstructure.Node;
-import nl.mpi.corpusstructure.UnknownNodeException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import nl.mpi.corpusstructure.AccessInfo;
+import nl.mpi.corpusstructure.ArchiveObjectsDB;
+import nl.mpi.corpusstructure.CorpusStructureDB;
+import nl.mpi.corpusstructure.CorpusStructureDBImpl;
+import nl.mpi.corpusstructure.Node;
+import nl.mpi.corpusstructure.UnknownNodeException;
 
 /**
  * A class to do corpusstructure DB lookups
@@ -19,10 +17,7 @@ import org.apache.log4j.Logger;
  * @author André Moreira
  */
 public class CorpusStructureDAO {
-
-	private static Logger logger = Logger.getLogger(CorpusStructureDAO.class);
-
-	// these 6 values must be set from the init code
+	// these values must be set from the init code
 	private String _corpusDbURL;
 	private String _corpusDbUser;
 	private String _corpusDbPassword;
@@ -145,7 +140,7 @@ public class CorpusStructureDAO {
 				return list;
 			}
 		} catch (UnknownNodeException e) {
-			logger.error("Unknown node "+nodeId);
+			System.err.println("Unknown node "+nodeId);
 			list.add(AccessInfo.NOBODY);
 			return list;
 		}
@@ -197,7 +192,7 @@ public class CorpusStructureDAO {
 				return list;
 			}
 		} catch (UnknownNodeException e) {
-			logger.error("Unknown node "+nodeId);
+			System.err.println("Unknown node "+nodeId);
 			list.add(AccessInfo.NOBODY);
 			return list;
 		}
