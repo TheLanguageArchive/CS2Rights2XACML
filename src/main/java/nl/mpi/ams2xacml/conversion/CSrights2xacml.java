@@ -41,7 +41,7 @@ public class CSrights2xacml {
 		System.err.println("INF: -d=<DIR>  the directory where to output the policy files to. (default: './generatedPolicies/')");
 		System.err.println("INF: -g=<integer>  replace groups with more than <integer> users by the 'authenticated' user. (default: -1, do not replace)");
 		System.err.println("INF: -f=<format>  the username format to use in te output XACML. Possible values are: 'strip' (remove '@domain' from usernames), "
-				+ "'keep' (leave usernames as they are returned from the corpusstructure) and 'both' (generate both versions for each user). (default: keep");
+				+ "'keep' (leave usernames as they are returned from the corpusstructure) and 'both' (generate both versions for each user). (default: keep)");
 	}
 
 	
