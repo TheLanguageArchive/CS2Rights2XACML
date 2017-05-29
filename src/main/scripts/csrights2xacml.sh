@@ -24,7 +24,7 @@ cd "${0%/*}"
 TARGET_VER=18
 # The JAR file to launch, relative to the directory of this script
 # make this "$0" to execute a binary payload (on this script) as a JAR
-TARGET_JAR="csrights2xacml-${project.version}.jar"
+TARGET_JAR="csrights2xacml-${project.version}-jar-with-dependencies.jar"
 
 # Name of the application to display in error dialog
 TARGET_NAME="csrights2xacml"

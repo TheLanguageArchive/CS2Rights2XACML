@@ -67,7 +67,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>csrights2xacml</finalName>
+                            <finalName>csrights2xacml-${project.version}</finalName>
                             <appendAssemblyId>true</appendAssemblyId>
                         </configuration>
                     </execution>
