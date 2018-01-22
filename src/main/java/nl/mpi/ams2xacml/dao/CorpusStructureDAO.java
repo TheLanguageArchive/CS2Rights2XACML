@@ -206,9 +206,13 @@ public class CorpusStructureDAO {
 		}
 		return list;
 	}
+        
+        public boolean getOnsite(String nodeId) {
+            return getArchiveObjectsDB().isOnSite(nodeId);
+        }
 
 	/**
-	 * Initialize the underlaying corpusstructure database
+	 * Initialize the underlying corpusstructure database
 	 */
 	private void initCorpusStructureDB() {
 		if ((csdb != null) && (aodb != null))

@@ -103,9 +103,17 @@ public class CSrights2xacml {
 		nodeIds.addAll(startNodeIds);
 
 		for (String nodeId : nodeIds) {
+                    boolean onSite;
+                    System.out.println("NodeID: "+nodeId);
+                    onSite = csDAO.getOnsite(nodeId);
+                    if (!onSite) {
+                        System.out.println("Node is not onsite, no access permissions known: "+nodeId); 
+                    }
+                    else {
 			generateXACMLDocument(csDAO.getNodeType(nodeId), nodeId);
 			String handle = csDAO.getHandleFor(nodeId);
 			xacmlHandler.storeXACMLfile(handle);
+                    }
 		}
 		
 		csDAO.closeCorpusStructureDB();
@@ -165,6 +173,8 @@ public class CSrights2xacml {
 		}
 		
 		xacmlHandler.generateXACMLAccessList(allowedUsers, templateNode, nodeToRemove, usernameFormat);
+                
+                
 	}
 
 }

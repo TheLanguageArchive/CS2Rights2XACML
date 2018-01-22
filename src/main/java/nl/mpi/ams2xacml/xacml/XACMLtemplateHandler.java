@@ -89,6 +89,9 @@ public class XACMLtemplateHandler {
 	 * @param handle The handle to name the file after
 	 */
 	public void storeXACMLfile(String handle) throws Exception {
+            
+                System.out.println("writing XACML for Handle/NodeID: "+handle);
+            
 		int partIdentifierIdx = handle.indexOf("@");
 		
 		if (partIdentifierIdx != -1)
@@ -108,6 +111,8 @@ public class XACMLtemplateHandler {
 
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+                
+                System.out.println("writing XACML to: "+resultFile);
 
 		StreamResult result =  new StreamResult(new FileOutputStream(resultFile));
 		transformer.transform(source, result);
