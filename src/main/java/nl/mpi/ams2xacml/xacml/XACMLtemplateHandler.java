@@ -96,7 +96,7 @@ public class XACMLtemplateHandler {
 		
 		if (partIdentifierIdx != -1)
 			handle = handle.substring(0, partIdentifierIdx);
-		handle = handle.replaceAll("[^a-zA-Z0-9]", "_").replace("hdl:", "lat:");
+		handle = handle.replaceAll("[^a-zA-Z0-9]", "_").replace("hdl_", "lat_");
 
 		File resultFile = new File(policiesDir + handle + ".xml");
 
